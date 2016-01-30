@@ -7,7 +7,7 @@ healthWeatherData <- data.frame(EVTYPE=factor(), FATALITIES=numeric(), INJURIES=
 healthWeatherData <- weatherData[,c(8,23,24)]
 healthComputed <- mutate(healthWeatherData, HealthTotal=FATALITIES+INJURIES)
 healthSums <- ddply(healthComputed, .(EVTYPE), summarize, HealthTotal=sum(HealthTotal))
-topHealth <- head(healthSums[order(HealthTotal, na.last = TRUE, decreasing = TRUE),])
+topHealth <- head(healthSums[order(healthSums$HealthTotal, na.last = TRUE, decreasing = TRUE),])
 ggplot(topHealth, aes(x = factor(EVTYPE), y = HealthTotal)) + geom_bar(stat = "identity")
 ggplot(topHealth, aes(x = factor(EVTYPE), y = HealthTotal)) + geom_bar(stat = "identity", fill = "#FF9999")
 
