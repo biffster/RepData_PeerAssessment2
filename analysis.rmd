@@ -43,17 +43,39 @@ This provided a dataframe named healthWeatherData that contained three fields co
 ```{r mutated_health}
 healthComputed <- mutate(healthWeatherData, HealthTotal=FATALITIES+INJURIES)
 ```
+
 ```{r mutated_econ, echo=FALSE}
 econComputed <- mutate(econWeatherData, econTotal=PROPDMG+CROPDMG)
 ```
 
 # Results
+In order to determine which storm types caused the greatest harm to population health, I first summed up the computed Totals value per weather event type, sorted the results, and pulled out the top five results.
 
-
-You can also embed plots, for example:
-
-```{r, echo=FALSE}
-plot(cars)
+```{r results_health}
+healthSums <- ddply(healthComputed, .(EVTYPE), summarize, HealthTotal=sum(HealthTotal))
+topHealth <- head(healthSums[order(healthSums$HealthTotal, na.last = TRUE, decreasing = TRUE),])
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r results_econ, echo=FALSE}
+econSums <- ddply(econComputed, .(EVTYPE), summarize, econTotal=sum(econTotal))
+topEcon <- head(econSums[order(econSums$econTotal, na.last = TRUE, decreasing = TRUE),])
+```
+
+The storm type with the greatest impact on population health is the first in the list:
+
+```{r, echo=FALSE}
+head(topHealth,1)
+```
+
+The following chart shows that Tornadoes easily do the greatest amount of harm to a population's health.
+
+```{r, echo=FALSE}
+ggplot(topHealth, aes(x = factor(EVTYPE), y = HealthTotal)) + geom_bar(stat = "identity", fill = "#FF9999")
+
+```
+
+Similarly, Tornadoes have the greatest negative economic impact, outpacing all other events (but not as drastically as the impact to health).
+
+```{r, echo=FALSE}
+ggplot(topEcon, aes(x = factor(EVTYPE), y = econTotal)) + geom_bar(stat = "identity", fill = "#FF9999")
+```
