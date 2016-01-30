@@ -7,6 +7,15 @@ output: html_document
 # Synopsis
 In this report, I try to create a simplistic model to determine what types of storms create the most economic damage and pose the biggest threat to public health. The raw data is in the form of a bzip'ed CSV file containing storm information from the US National Oceanic and Atmospheric Administration (NOAA). After analysis, I have found that Tornadoes pose the greatest risk to public health and also have the greatest economic consequences.
 
+# Required libraries
+This report used the following R libraries:
+
+```{r, message=FALSE, warning=FALSE}
+library(plyr)
+library(dplyr)
+library(ggplot2)
+```
+
 # Loading and Processing the Raw Data
 
 The raw data from the NOAA contained more information than was needed for this analysis. There were specific fields that gave the data most relevant to solving the studies questions. 
@@ -20,15 +29,22 @@ weatherData <- read.csv("repdata-data-StormData.csv.bz2", header = TRUE, na.stri
 
 Due to the size of the data and the large amount of extraneous data, it seemed best to create two dataframes, each based off of weatherData, with the data needed for each analysis. To accomplish this, empty dataframes were created, and then data from weatherData was copied in, as shown below. (Note that only the Health data manipulations are shown in this document; Economic data manipulations were exactly the same, just using the corresponding data.)
 
-```{r}
+```{r create_health}
 healthWeatherData <- data.frame(EVTYPE=factor(), FATALITIES=numeric(), INJURIES=numeric())
 healthWeatherData <- weatherData[,c(8,23,24)]
 ```
+```{r create_econ, echo=FALSE}
+econWeatherData <- data.frame(EVTYPE=factor(), PROPDMG=numeric(), CROPDMG=numeric())
+econWeatherData <- weatherData[,c(8,25,27)]
+```
 
-This provided a dataframe named healthWeatherData that contained three fields corresponding to the Event Type, the number of Injuries reported, and the number of Fatalities reported. One last data manipulation was needed - I decided the best representation of public health incidents was a sum of the number of Fatalities and Injuries. Since this is not available in the NOAA's data, I used mutate to compute the sum and add it into the dataframe as a new field.
+This provided a dataframe named healthWeatherData that contained three fields corresponding to the Event Type, the number of Injuries reported, and the number of Fatalities reported. The best representation of public health incidents was the sum of the number of Fatalities and Injuries. Since this is not available in the NOAA's data, I used mutate to compute the sum and add it into the dataframe as a new field.
 
-```{r}
+```{r mutated_health}
 healthComputed <- mutate(healthWeatherData, HealthTotal=FATALITIES+INJURIES)
+```
+```{r mutated_econ, echo=FALSE}
+econComputed <- mutate(econWeatherData, econTotal=PROPDMG+CROPDMG)
 ```
 
 # Results
