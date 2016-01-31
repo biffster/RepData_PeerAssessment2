@@ -75,7 +75,13 @@ ggplot(topHealth, aes(x = factor(EVTYPE), y = HealthTotal)) + geom_bar(stat = "i
 ```
 
 Similarly, Tornadoes have the greatest negative economic impact, outpacing all other events (but not as drastically as the impact to health).
+```{r, echo=FALSE}
+head(topEcon,1)
+```
 
 ```{r, echo=FALSE}
-ggplot(topEcon, aes(x = factor(EVTYPE), y = econTotal)) + geom_bar(stat = "identity", fill = "#FF9999")
+ggplot(topEcon, aes(x = factor(EVTYPE), y = econTotal/1000)) + geom_bar(stat = "identity", fill = "#7fbf7f") + labs(title = "Economic impact", x = "Storm type", y = "Thousands of dollars")
 ```
+
+## Possibly skewed data?
+It seems there's a real possibility that the data is skewed towards Tornadoes. In the data for both Health and Economic Impact, Tornadoes have a drastically higher score than any other storm type. It is probably that these results I have found and presented here are correct. One possible future study of this data would be to check to see if torandoes are over-represented in the data, this could happen if there are fewer observations relating to torandoes than to other weather types.  
