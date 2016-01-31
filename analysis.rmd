@@ -26,7 +26,7 @@ The data is presented in a bzip'd CSV file, which I was able to open and load di
 weatherData <- read.csv("repdata-data-StormData.csv.bz2", header = TRUE, na.strings = "NA")
 ```
 
-Due to the size of the data and the large amount of extraneous data, it seemed best to create two dataframes, each based off of weatherData, with the data needed for each analysis. To accomplish this, empty dataframes were created, and then data from weatherData was copied in, as shown below. (_Note that only the Health data manipulations are shown in this document; Economic data manipulations were exactly the same, just using the corresponding data._)
+Due to the size of the data and the large amount of extraneous data, it seemed best to create two dataframes, each based off of weatherData, with the data needed for each analysis. To accomplish this, empty dataframes were created, and then data from weatherData was copied in, as shown below. (** _Note that only the Health data manipulations are shown in this document; Economic data manipulations were exactly the same, just using the corresponding data._ **)
 
 ```{r create_health}
 healthWeatherData <- data.frame(EVTYPE=factor(), FATALITIES=numeric(), INJURIES=numeric())
@@ -83,4 +83,4 @@ ggplot(topEcon, aes(x = factor(EVTYPE), y = econTotal/1000)) + geom_bar(stat = "
 ```
 
 ## Possibly skewed data?
-It seems there's a real possibility that the data is skewed towards tornadoes. In the data for both Health and Economic Impact, tornadoes have a drastically higher score than any other storm type. It is probably that these results I have found and presented here are correct. One possible future study of this data would be to check to see if torandoes are over-represented in the data, this could happen if there are fewer observations relating to torandoes than to other weather types.  
+It seems there's a real possibility that the data is skewed towards tornadoes. In the data for both Health and Economic Impact, tornadoes have a drastically higher score than any other storm type. It is probably that these results I have found and presented here are correct. One possible future study of this data would be to check to see if torandoes are over-represented in the data, this could happen if there are fewer observations relating to tornadoes than to other weather types.  
