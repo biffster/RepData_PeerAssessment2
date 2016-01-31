@@ -1,11 +1,11 @@
 ---
-title: "Top storm types which effect public health and economic interests"
+title: "Top storm types which effect population health and economic interests"
 author: "Michael Fierro"
 date: "January 30, 2016"
 output: html_document
 ---
 # Synopsis
-In this report, I try to create a simplistic model to determine what types of storms create the most economic damage and pose the biggest threat to public health. The raw data is in the form of a bzip'ed CSV file containing storm information from the US National Oceanic and Atmospheric Administration (NOAA). After analysis, I have found that Tornadoes pose the greatest risk to public health and also have the greatest economic consequences.
+In this report, I try to create a simplistic model to determine what types of storms create the most economic damage and pose the biggest threat to population health. The raw data is in the form of a bzip'ed CSV file containing storm information from the US National Oceanic and Atmospheric Administration (NOAA). After analysis, I have found that tornadoes pose the greatest risk to population health and also have the greatest economic consequences.
 
 # Required libraries
 This report used the following R libraries:
@@ -20,14 +20,13 @@ library(ggplot2)
 
 The raw data from the NOAA contained more information than was needed for this analysis. There were specific fields that gave the data most relevant to solving the studies questions. 
 
-## Reading in data
 The data is presented in a bzip'd CSV file, which I was able to open and load directly in one step:
 
 ```{r}
 weatherData <- read.csv("repdata-data-StormData.csv.bz2", header = TRUE, na.strings = "NA")
 ```
 
-Due to the size of the data and the large amount of extraneous data, it seemed best to create two dataframes, each based off of weatherData, with the data needed for each analysis. To accomplish this, empty dataframes were created, and then data from weatherData was copied in, as shown below. (Note that only the Health data manipulations are shown in this document; Economic data manipulations were exactly the same, just using the corresponding data.)
+Due to the size of the data and the large amount of extraneous data, it seemed best to create two dataframes, each based off of weatherData, with the data needed for each analysis. To accomplish this, empty dataframes were created, and then data from weatherData was copied in, as shown below. (_Note that only the Health data manipulations are shown in this document; Economic data manipulations were exactly the same, just using the corresponding data._)
 
 ```{r create_health}
 healthWeatherData <- data.frame(EVTYPE=factor(), FATALITIES=numeric(), INJURIES=numeric())
@@ -38,7 +37,7 @@ econWeatherData <- data.frame(EVTYPE=factor(), PROPDMG=numeric(), CROPDMG=numeri
 econWeatherData <- weatherData[,c(8,25,27)]
 ```
 
-This provided a dataframe named healthWeatherData that contained three fields corresponding to the Event Type, the number of Injuries reported, and the number of Fatalities reported. The best representation of public health incidents was the sum of the number of Fatalities and Injuries. Since this is not available in the NOAA's data, I used mutate to compute the sum and add it into the dataframe as a new field.
+This provided a dataframe named healthWeatherData that contained three fields corresponding to the Event Type, the number of Injuries reported, and the number of Fatalities reported. The best representation of population health incidents was the sum of the number of Fatalities and Injuries. Since this is not available in the NOAA's data, I used mutate to compute the sum and add it into the dataframe as a new field.
 
 ```{r mutated_health}
 healthComputed <- mutate(healthWeatherData, HealthTotal=FATALITIES+INJURIES)
@@ -67,14 +66,14 @@ The storm type with the greatest impact on population health is the first in the
 head(topHealth,1)
 ```
 
-The following chart shows that Tornadoes easily do the greatest amount of harm to a population's health.
+The following chart shows that tornadoes easily do the greatest amount of harm to a population's health.
 
 ```{r, echo=FALSE}
-ggplot(topHealth, aes(x = factor(EVTYPE), y = HealthTotal)) + geom_bar(stat = "identity", fill = "#FF9999")
+ggplot(topHealth, aes(x = factor(EVTYPE), y = HealthTotal)) + geom_bar(stat = "identity", fill = "#FF9999") + labs(title = "Population health impact", x = "Storm type", y = "Injuries + deaths")
 
 ```
 
-Similarly, Tornadoes have the greatest negative economic impact, outpacing all other events (but not as drastically as the impact to health).
+Similarly, tornadoes have the greatest negative economic impact, outpacing all other events (but not as drastically as the impact to health).
 ```{r, echo=FALSE}
 head(topEcon,1)
 ```
@@ -84,4 +83,4 @@ ggplot(topEcon, aes(x = factor(EVTYPE), y = econTotal/1000)) + geom_bar(stat = "
 ```
 
 ## Possibly skewed data?
-It seems there's a real possibility that the data is skewed towards Tornadoes. In the data for both Health and Economic Impact, Tornadoes have a drastically higher score than any other storm type. It is probably that these results I have found and presented here are correct. One possible future study of this data would be to check to see if torandoes are over-represented in the data, this could happen if there are fewer observations relating to torandoes than to other weather types.  
+It seems there's a real possibility that the data is skewed towards tornadoes. In the data for both Health and Economic Impact, tornadoes have a drastically higher score than any other storm type. It is probably that these results I have found and presented here are correct. One possible future study of this data would be to check to see if torandoes are over-represented in the data, this could happen if there are fewer observations relating to torandoes than to other weather types.  
