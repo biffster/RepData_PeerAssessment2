@@ -5,7 +5,7 @@ date: "January 30, 2016"
 output: html_document
 ---
 # Synopsis
-In this report, I try to create a simplistic model to determine what types of storms create the most economic damage and pose the biggest threat to population health. The raw data is in the form of a bzip'ed CSV file containing storm information from the US National Oceanic and Atmospheric Administration (NOAA). After analysis, I have found that tornadoes pose the greatest risk to population health and also have the greatest economic consequences.
+In this report, I try to create a simplistic model to determine what types of storms create the most economic damage and pose the biggest threat to population health. The raw data is in the form of a bzip'ed CSV file containing storm information from the US National Oceanic and Atmospheric Administration (NOAA). After analysis, I have found that **tornadoes** pose the greatest risk to population health and also have the greatest economic consequences.
 
 # Required libraries
 This report used the following R libraries:
